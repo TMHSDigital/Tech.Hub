@@ -43,6 +43,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            margin: 10px;
         }
         .button:hover {
             box-shadow: 0 0 20px #00ff00;
@@ -51,11 +52,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>NEURAL NETWORK VISUALIZATION</h1>
+        <h1>NEURAL NETWORK INFILTRATION</h1>
+        <p>Activate the glowing nodes to uncover the second fragment</p>
         <canvas id="neuralNetwork"></canvas>
+        <button class="button" onclick="checkActivation()">Check Activation</button>
         <a href="index.html" class="button">Return to Nexus</a>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script>
         const canvas = document.getElementById('neuralNetwork');
         const ctx = canvas.getContext('2d');
@@ -65,19 +69,34 @@
 
         const nodes = [];
         const connections = [];
+        const targetNodes = [];
 
         class Node {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
                 this.radius = 5;
+                this.activated = false;
+                this.isTarget = false;
             }
 
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#00ff00';
+                ctx.fillStyle = this.activated ? '#ff00ff' : (this.isTarget ? '#ffff00' : '#00ff00');
                 ctx.fill();
+            }
+
+            checkClick(x, y) {
+                const distance = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
+                if (distance <= this.radius) {
+                    this.activated = !this.activated;
+                    // Play activation sound
+                    var sound = new Howl({
+                        src: ['https://example.com/path/to/node-activation-sound.mp3']
+                    });
+                    sound.play();
+                }
             }
         }
 
@@ -101,31 +120,14 @@
                 nodes.push(new Node(Math.random() * canvas.width, Math.random() * canvas.height));
             }
 
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    if (Math.random() > 0.85) {
-                        connections.push(new Connection(nodes[i], nodes[j]));
-                    }
-                }
-            }
-        }
-
-        function animateNetwork() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let connection of connections) {
-                connection.draw();
+            // Select 5 random nodes as targets
+            for (let i = 0; i < 5; i++) {
+                let targetNode;
+                do {
+                    targetNode = nodes[Math.floor(Math.random() * nodes.length)];
+                } while (targetNodes.includes(targetNode));
+                targetNode.isTarget = true;
+                targetNodes.push(targetNode);
             }
 
-            for (let node of nodes) {
-                node.draw();
-            }
-
-            requestAnimationFrame(animateNetwork);
-        }
-
-        createNetwork();
-        animateNetwork();
-    </script>
-</body>
-</html>
+            for (let i = 0; i < nodes.length;
