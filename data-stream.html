@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Stream</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 100%);
+        }
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 20px;
+        }
+        .data-stream {
+            width: 80%;
+            height: 300px;
+            border: 2px solid #00ff00;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .data {
+            position: absolute;
+            font-size: 14px;
+            white-space: nowrap;
+            animation: scroll 10s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: #00ff00;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .button:hover {
+            box-shadow: 0 0 20px #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DATA STREAM ACCESSED</h1>
+        <div class="data-stream" id="dataStream"></div>
+        <a href="index.html" class="button">Return to Nexus</a>
+    </div>
+
+    <script>
+        const dataStream = document.getElementById('dataStream');
+        const characters = '01';
+        
+        function generateRandomData() {
+            let result = '';
+            for (let i = 0; i < 1000; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        function createDataElement() {
+            const data = document.createElement('div');
+            data.className = 'data';
+            data.style.top = Math.random() * 100 + '%';
+            data.style.left = Math.random() * 100 + '%';
+            data.textContent = generateRandomData();
+            dataStream.appendChild(data);
+
+            setTimeout(() => {
+                dataStream.removeChild(data);
+            }, 10000);
+        }
+
+        setInterval(createDataElement, 1000);
+    </script>
+</body>
+</html>
