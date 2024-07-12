@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Nexus</title>
+    <title>Cyberpunk Decryption</title>
     <style>
         body, html {
             margin: 0;
@@ -27,6 +27,11 @@
         h1 {
             font-size: 3em;
             text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 30px;
+        }
+        p {
+            text-align: center;
+            max-width: 600px;
             margin-bottom: 30px;
         }
         .button-container {
@@ -79,14 +84,16 @@
 <body>
     <div id="particles"></div>
     <div class="container">
-        <h1>DIGITAL NEXUS</h1>
+        <h1>CYBERPUNK DECRYPTION</h1>
+        <p>Welcome, hacker. A critical message has been fragmented and hidden within the corporate mainframe. Your mission: navigate through the system's defenses, gather the fragments, and decrypt the message before it's too late.</p>
         <div class="button-container">
-            <a href="data-stream.html" class="button">Enter Data Stream</a>
-            <a href="neural-network.html" class="button">Access Neural Network</a>
+            <a href="data-stream.html" class="button">Access Data Stream</a>
+            <a href="neural-network.html" class="button">Infiltrate Neural Network</a>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script>
         window.onload = function() {
             Particles.init({
@@ -108,6 +115,14 @@
                     }
                 ]
             });
+
+            // Background music
+            var sound = new Howl({
+                src: ['https://example.com/path/to/cyberpunk-background.mp3'],
+                loop: true,
+                volume: 0.5
+            });
+            sound.play();
         };
     </script>
 </body>
