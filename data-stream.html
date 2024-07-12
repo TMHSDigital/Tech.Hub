@@ -55,28 +55,47 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            margin: 10px;
         }
         .button:hover {
             box-shadow: 0 0 20px #00ff00;
+        }
+        #codeInput {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>DATA STREAM ACCESSED</h1>
+        <p>Find the hidden 4-digit code in the data stream</p>
         <div class="data-stream" id="dataStream"></div>
+        <div>
+            <input type="text" id="codeInput" placeholder="Enter 4-digit code" maxlength="4">
+            <button class="button" onclick="checkCode()">Submit Code</button>
+        </div>
         <a href="index.html" class="button">Return to Nexus</a>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script>
         const dataStream = document.getElementById('dataStream');
         const characters = '01';
+        const hiddenCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate random 4-digit code
         
         function generateRandomData() {
             let result = '';
             for (let i = 0; i < 1000; i++) {
                 result += characters.charAt(Math.floor(Math.random() * characters.length));
             }
+            // Insert hidden code at a random position
+            const insertPos = Math.floor(Math.random() * (result.length - 4));
+            result = result.slice(0, insertPos) + hiddenCode + result.slice(insertPos + 4);
             return result;
         }
 
@@ -94,6 +113,33 @@
         }
 
         setInterval(createDataElement, 1000);
+
+        function checkCode() {
+            const input = document.getElementById('codeInput').value;
+            if (input === hiddenCode) {
+                alert('Correct code! You've uncovered the first fragment: "THE FUTURE"');
+                // Play success sound
+                var sound = new Howl({
+                    src: ['https://example.com/path/to/success-sound.mp3']
+                });
+                sound.play();
+            } else {
+                alert('Incorrect code. Try again.');
+                // Play error sound
+                var sound = new Howl({
+                    src: ['https://example.com/path/to/error-sound.mp3']
+                });
+                sound.play();
+            }
+        }
+
+        // Background data stream sound
+        var streamSound = new Howl({
+            src: ['https://example.com/path/to/data-stream-sound.mp3'],
+            loop: true,
+            volume: 0.3
+        });
+        streamSound.play();
     </script>
 </body>
 </html>
